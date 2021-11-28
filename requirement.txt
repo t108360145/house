@@ -1,5 +1,4 @@
-#!/bin/bash
-pip install pandas
-pip install matplotlib
-pip install tensorflow
-pip install sklearn
+pandas
+matplotlib
+tensorflow
+sklearn
