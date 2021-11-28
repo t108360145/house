@@ -82,15 +82,15 @@ def train():
     model.add(Dense(units=1,kernel_initializer="normal"))
     model.compile(loss="MAE", optimizer="adam")
 
-    model.summary()			//輸出模型摘要
+    model.summary()						//輸出模型摘要
 
     //設定訓練過程只要超過5次沒有變好就結束
     callbacks=[keras.callbacks.EarlyStopping(patience=5,min_delta=1e-3)]	
 
     history=model.fit(X_train,Y_train,validation_data=(X_valid,Y_valid),epochs=150,callbacks=callbacks)	//開始訓練，次數為150
 
-    plotLearningCurves(history)		//劃出訓練曲線圖
-    model.save("housing_model")		//儲存模型
+    plotLearningCurves(history)					//劃出訓練曲線圖
+    model.save("housing_model")					//儲存模型
 
 //輸出結果
 def test():
