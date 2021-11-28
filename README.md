@@ -52,7 +52,7 @@ valid_data = pd.read_csv("data/valid-v3.csv")
 X_valid=valid_data.drop(['price','id'],axis=1).values
 Y_valid=valid_data['price'].values
 
-//資料前處理
+//資料前處理，用StandlerScaler將平均值變為0，標準差為1
 scaler=preprocessing.StandardScaler().fit(X_train)
 X_train=preprocessing.scale(X_train)
 X_valid=scaler.transform(X_valid)
@@ -70,7 +70,8 @@ def plotLearningCurves(history):
 //模型
 def train():
     model=Sequential()
-    model.add(Dense(units=80,activation="relu",kernel_initializer="normal",input_dim=X_train.shape[1]))	//輸入層，神經元數量為80，激活函數為線性
+    //輸入層，神經元數量為80，激活函數為線性
+    model.add(Dense(units=80,activation="relu",kernel_initializer="normal",input_dim=X_train.shape[1]))	
     model.add(Dense(units=70,kernel_initializer="normal"))
     model.add(Dense(units=60,kernel_initializer="normal"))
     model.add(Dense(units=40,kernel_initializer="normal"))
@@ -81,8 +82,10 @@ def train():
     model.add(Dense(units=1,kernel_initializer="normal"))
     model.compile(loss="MAE", optimizer="adam")
 
-    model.summary()	//輸出模型摘要
-    callbacks=[keras.callbacks.EarlyStopping(patience=5,min_delta=1e-3)]	//設定訓練過程只要超過5次沒有變好就結束
+    model.summary()			//輸出模型摘要
+
+    //設定訓練過程只要超過5次沒有變好就結束
+    callbacks=[keras.callbacks.EarlyStopping(patience=5,min_delta=1e-3)]	
 
     history=model.fit(X_train,Y_train,validation_data=(X_valid,Y_valid),epochs=150,callbacks=callbacks)	//開始訓練，次數為150
 
@@ -91,11 +94,11 @@ def train():
 
 //輸出結果
 def test():
-    model = tensorflow.keras.models.load_model('housing_model')		//讀取模型
+    model = tensorflow.keras.models.load_model('housing_model')	//讀取模型
 
-    result=model.predict(X_test)	//預測結果
+    result=model.predict(X_test)				//預測結果
 
-    result=pd.DataFrame(result,columns=['price'])	//把輸出的Excel調整成符合老師要的格式
+    result=pd.DataFrame(result,columns=['price'])		//把輸出的Excel調整成符合老師要的格式
     result.index+=1
     result.index.name="id"
     result.to_csv('result.csv')
