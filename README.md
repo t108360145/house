@@ -1,3 +1,23 @@
+#*House Regression*
+
+##介紹
+data資料夾是老師Kaggle給的5個檔案
+housing_model是訓練完成的模型
+result.csv是輸出的結果
+main.py是主程式
+test.py是用來輸出結果的程式
+requirement程式引入的函數
+train.sh訓練腳本
+test.sh輸出腳本
+
+##心得
+我的專題有用到Yolo來辨識圖片，但是Yolo會自己架構模型跟輸出曲線等等，只要給他資料跟做一些基本的設定就可以了，而這是我第一次自己來架構模型，神經層數跟神經元數量該如何設定，我並不是很了解，只好慢慢摸索，測試神經元數量跟層數這兩者之間該如何取捨，成功將loss從十多萬降低到七萬，原本想要繼續優化模型，但礙於這兩周為期中考周，而我兩周後還有一個比賽，時間安排上比較緊湊，無法做出更好的模型來繳交。
+
+##程式介紹
+首先我利用Pandas來讀取資料，把ID跟Price兩個標籤刪除後，再利用sklearing來做資料的前處理，而模型部分我使用keras，並嘗試讓輸出層的神經元數量至少為輸入層的一半，來改善loss的情況，所以總共用了八層，分別有70/60/40/30/20/10/5/1個神經元，損失函數為MAE，優化器為adam，模型建立完成後再利用matplotlib劃出訓練的過程跟曲線。
+
+##程式碼
+'''
 import matplotlib.pyplot as plt
 import pandas as pd
 import tensorflow
@@ -35,7 +55,7 @@ def plotLearningCurves(history):
 
 def train():
     model=Sequential()
-    model.add(Dense(units=80,activation="relu",kernel_initializer="normal", input_dim=X_train.shape[1]))
+    model.add(Dense(units=80,activation="relu",kernel_initializer="normal",input_dim=X_train.shape[1]))
     model.add(Dense(units=70,kernel_initializer="normal"))
     model.add(Dense(units=60,kernel_initializer="normal"))
     model.add(Dense(units=40,kernel_initializer="normal"))
@@ -64,5 +84,4 @@ def test():
     result.index+=1
     result.index.name="id"
     result.to_csv('result.csv')
-
-train()
+'''
